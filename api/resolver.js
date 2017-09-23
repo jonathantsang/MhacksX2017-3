@@ -6,6 +6,7 @@ var Client = require('coinbase').Client;
 
 // The API that returns the in-email representation.
 module.exports = function(req, res) {
+  console.log(req);
   var query = req.query.input;
   console.log(query);
   if(query != 'BTC' || query != 'ETC' || query != 'LTE'){
