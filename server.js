@@ -12,7 +12,7 @@ var corsOptions = {
 app.get('/resolver', cors(corsOptions), require('./api/resolver'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.listen(process.env.PORT || 9146);
+  app.listen(process.env.PORT || 9147);
 } else {
   var pem = require('pem');
   var https = require('https');
@@ -22,6 +22,6 @@ if (process.env.NODE_ENV === 'production') {
     https.createServer({
       key: keys.serviceKey,
       cert: keys.certificate
-    }, app).listen(process.env.PORT || 9146);
+    }, app).listen(process.env.PORT || 9147);
   });
 }

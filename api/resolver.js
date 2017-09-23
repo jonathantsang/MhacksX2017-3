@@ -1,48 +1,40 @@
 var key = require('../utils/key');
 var request = require('request');
 var _ = require('underscore');
+var Client = require('coinbase').Client;
 
 
 // The API that returns the in-email representation.
 module.exports = function(req, res) {
-  var url = req.query.url.trim();
-  console.log(url);
-  // plot \[([0-9]*, [0-9]*)+\]
-  var splitURL = url.split('=');
-  console.log(splitURL);
-  var query = splitURL[0];
-  if(splitURL.length == 2){
-    query = splitURL[1];
-  }
-  
-  // var query = 'plot[(0,0)(1,1))]';
+  var query = req.query.input;
   console.log(query);
+  if(query != 'BTC' || query != 'ETC' || query != 'LTE'){
+    return;
+  }
 
-  var response = request({
-    url : 'http://api.wolframalpha.com/v2/query',
-    qs: {
-      input: query,
-      format: 'image',
-      output : 'JSON',
-      appid: key
-    },
-    timeout: 15 * 1000
-  }, function(err, response) {
+  var clientID = '6c14f1035ca3ee3d9b632a10e268278217f213c331b5221f4b7c729810414f5c';
+  var sec = 'b8578f22a343b98ba3a7fe78004bb30eadae8df1c8843bea81669842cdc69d67';
+  var link = 'https://www.coinbase.com/oauth/authorize?client_id=6c14f1035ca3ee3d9b632a10e268278217f213c331b5221f4b7c729810414f5c&redirect_uri=https%3A%2F%2Fcoinbasepricecheck.herokuapp.com&response_type=code&scope=wallet%3Auser%3Aread';
+
+  var client = new Client({
+    'apiKey': clientID,
+    'apiSecret': sec,
+  });
+
+currencyCode = 'BTC'  // can also use EUR, CAD, etc.
+
+// Make the request
+client.getBuyPrice({'currencyPair': query + '-USD'}, function(err, price) {
     if (err) {
       res.status(500).send('Error');
       return;
+    } else {
+      console.log(price);
+      console.log(price.data.amount);
+      var html = '<p>'+ query + ' ' + price.data.amount + '</p>';
+      res.json({
+        body: html
+      });
     }
-    var data = JSON.parse(response.body);
-    var pods = data.queryresult.pods;
-    if(!pods) return;
-    var ph = pods.find((obj) => {return obj.title==='Plot'});
-    var img = ph.subpods[0].img.src
-    console.log(img);
-
-    var width = '100%'
-    var html = '<img style="max-width:100%;" src="' + img + '" width="' + width + '"/>';
-    res.json({
-      body: html
-    });
   });
 };
