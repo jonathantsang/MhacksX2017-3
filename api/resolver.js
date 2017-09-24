@@ -9,7 +9,7 @@ module.exports = function(req, res) {
   console.log(req);
   var query = req.query.url;
   console.log(query);
-  if(query != 'BTC' && query != 'ETH' && query != 'LTE'){
+  if(query != 'BTC' && query != 'ETH' && query != 'LTC'){
     return;
   }
   
