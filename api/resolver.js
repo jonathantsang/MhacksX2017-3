@@ -9,7 +9,7 @@ module.exports = function(req, res) {
   console.log(req);
   var query = req.query.url;
   console.log(query);
-  if(query != 'BTC' || query != 'ETC' || query != 'LTE'){
+  if(query != 'BTC' && query != 'ETC' && query != 'LTE'){
     return;
   }
 
@@ -21,8 +21,6 @@ module.exports = function(req, res) {
     'apiKey': clientID,
     'apiSecret': sec,
   });
-
-currencyCode = 'BTC'  // can also use EUR, CAD, etc.
 
 // Make the request
 client.getBuyPrice({'currencyPair': query + '-USD'}, function(err, price) {
