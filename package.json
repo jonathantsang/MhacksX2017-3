@@ -1,7 +1,7 @@
 {
-  "name": "giphy-example-link-resolver",
+  "name": "link-resolver-coinbase",
   "version": "0.0.1",
-  "description": "Giphy link resolver for Mixmax",
+  "description": "link-resolver-coinbase",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js"
@@ -9,7 +9,6 @@
   "repository": {
     "type": "git"
   },
-  "homepage": "https://github.com/mixmaxhq/giphy-example-link-resolver",
   "dependencies": {
     "body-parser": "^1.12.2",
     "coinbase": "^2.0.6",
